@@ -24,10 +24,13 @@ import java.util.List;
 import java.util.Objects;
 
 public final class ShopItemOnly extends JavaPlugin implements Listener {
-
+    private String message;
     @Override
     public void onEnable() {
         // Plugin startup logic
+        saveDefaultConfig();
+        this.message = getConfig().getString("messages.item-dropped");
+
         Bukkit.getPluginManager().registerEvents(this,this);
     }
 
@@ -56,6 +59,7 @@ public final class ShopItemOnly extends JavaPlugin implements Listener {
             event.getInventory().remove(item);
             Objects.requireNonNull(event.getPlayer().getWorld()).dropItemNaturally(event.getPlayer().getLocation(),item);
         });
+        event.getPlayer().sendMessage(this.message);
     }
     @EventHandler(priority = EventPriority.HIGH,ignoreCancelled = true)
     public void invClose(InventoryMoveItemEvent event){
