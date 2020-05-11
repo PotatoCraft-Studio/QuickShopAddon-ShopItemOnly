@@ -1,0 +1,6 @@
+name: ShopItemOnly
+version: ${project.version}
+main: cc.bukkit.quickshop.addon.shopitemonly.ShopItemOnly
+api-version: 1.13
+depend:
+  - QuickShop
