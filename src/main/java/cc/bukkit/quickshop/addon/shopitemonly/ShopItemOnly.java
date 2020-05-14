@@ -39,6 +39,13 @@ public final class ShopItemOnly extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
     public void invClose(InventoryCloseEvent event){
+        //noinspection ConstantConditions
+        if(event.getInventory() == null){ //Stupid CMIGUI plugin
+            return;
+        }
+        if(event.getInventory().getLocation() == null){
+            return;
+        }
         Shop shop = QuickShopAPI.getShopAPI().getShopIncludeAttached(Objects.requireNonNull(event.getInventory().getLocation()));
         if(shop == null){
             return;
@@ -61,6 +68,13 @@ public final class ShopItemOnly extends JavaPlugin implements Listener {
     }
     @EventHandler(priority = EventPriority.HIGH,ignoreCancelled = true)
     public void invClose(InventoryMoveItemEvent event){
+        //noinspection ConstantConditions
+        if(event.getDestination() == null){ //Stupid CMIGUI plugin
+            return;
+        }
+        if(event.getDestination().getLocation() == null){
+            return;
+        }
         Shop shop = QuickShopAPI.getShopAPI().getShopIncludeAttachedWithCaching(Objects.requireNonNull(event.getDestination().getLocation()));
         if(shop == null){
             return;
