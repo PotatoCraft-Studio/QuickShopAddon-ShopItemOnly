@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -35,9 +36,10 @@ public final class ShopItemOnly extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        HandlerList.unregisterAll((JavaPlugin)this);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST,ignoreCancelled = true)
     public void invClose(InventoryCloseEvent event){
         //noinspection ConstantConditions
         if(event.getInventory() == null){ //Stupid CMIGUI plugin
@@ -60,14 +62,17 @@ public final class ShopItemOnly extends JavaPlugin implements Listener {
             }
             pendingForRemoval.add(stack);
         }
-        pendingForRemoval.forEach(item->{
-            event.getInventory().remove(item);
-            Objects.requireNonNull(event.getPlayer().getWorld()).dropItemNaturally(event.getPlayer().getLocation(),item);
-        });
-        event.getPlayer().sendMessage(this.message);
+        if(!pendingForRemoval.isEmpty()) {
+            Objects.requireNonNull(event.getPlayer().getWorld());
+            for (ItemStack item : pendingForRemoval) {
+                event.getInventory().remove(item);
+                event.getPlayer().getWorld().dropItemNaturally(event.getPlayer().getLocation(), item);
+            }
+            event.getPlayer().sendMessage(this.message);
+        }
     }
-    @EventHandler(priority = EventPriority.HIGH,ignoreCancelled = true)
-    public void invClose(InventoryMoveItemEvent event){
+    @EventHandler(priority = EventPriority.HIGHEST,ignoreCancelled = true)
+    public void invMove(InventoryMoveItemEvent event){
         //noinspection ConstantConditions
         if(event.getDestination() == null){ //Stupid CMIGUI plugin
             return;
