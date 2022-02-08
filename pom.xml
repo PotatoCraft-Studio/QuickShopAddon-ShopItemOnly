@@ -6,7 +6,7 @@
 
     <groupId>cc.bukkit.quickshop.addon</groupId>
     <artifactId>ShopItemOnly</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>ShopItemOnly</name>
@@ -63,8 +63,8 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
         <repository>
-            <id>Ghost_chu</id>
-            <url>https://raw.githubusercontent.com/Ghost-chu/maven-repo/master</url>
+            <id>quickshop-repo</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
     </repositories>
 
@@ -78,7 +78,7 @@
         <dependency>
             <groupId>org.maxgamer</groupId>
             <artifactId>QuickShop</artifactId>
-            <version>4.0.3.2</version>
+            <version>5.1.0.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

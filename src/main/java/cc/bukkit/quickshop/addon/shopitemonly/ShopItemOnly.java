@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.QuickShopAPI;
-import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.api.shop.Shop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,13 @@ import java.util.Set;
 
 public final class ShopItemOnly extends JavaPlugin implements Listener {
     private String message;
+    private QuickShopAPI quickShopAPI;
     @Override
     public void onEnable() {
         // Plugin startup logic
         saveDefaultConfig();
         parseColours(getConfig());
+        quickShopAPI=QuickShop.getInstance();
         this.message = getConfig().getString("messages.item-dropped");
 
         Bukkit.getPluginManager().registerEvents(this,this);
@@ -48,7 +50,7 @@ public final class ShopItemOnly extends JavaPlugin implements Listener {
         if(event.getInventory().getLocation() == null){
             return;
         }
-        Shop shop = QuickShopAPI.getShopAPI().getShopIncludeAttached(Objects.requireNonNull(event.getInventory().getLocation()));
+        Shop shop = quickShopAPI.getShopManager().getShopIncludeAttached(Objects.requireNonNull(event.getInventory().getLocation()));
         if(shop == null){
             return;
         }
@@ -80,7 +82,7 @@ public final class ShopItemOnly extends JavaPlugin implements Listener {
         if(event.getDestination().getLocation() == null){
             return;
         }
-        Shop shop = QuickShopAPI.getShopAPI().getShopIncludeAttachedWithCaching(Objects.requireNonNull(event.getDestination().getLocation()));
+        Shop shop = quickShopAPI.getShopManager().getShopIncludeAttached(Objects.requireNonNull(event.getDestination().getLocation()));
         if(shop == null){
             return;
         }
